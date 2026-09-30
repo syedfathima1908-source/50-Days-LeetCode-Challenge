@@ -1,0 +1,69 @@
+# Intuition
+
+To find the intersection of two arrays while considering duplicate elements, we need to include an element as many times as it appears in both arrays.
+
+For example, if `2` appears twice in `nums1` and three times in `nums2`, the result should contain `2` twice.
+
+By sorting both arrays, equal elements are placed next to each other. We can then use two pointers to compare the elements of both arrays and find their intersection efficiently.
+
+# Approach
+
+1. Sort both arrays.
+2. Use two pointers:
+   - `i` points to `nums1`.
+   - `j` points to `nums2`.
+3. Compare `nums1[i]` and `nums2[j]`:
+   - If `nums1[i] < nums2[j]`, increment `i`.
+   - If `nums2[j] < nums1[i]`, increment `j`.
+   - If both are equal, add the element to the result and increment both pointers.
+4. Continue until either pointer reaches the end of its array.
+5. Convert the `ArrayList` into an integer array and return it.
+
+Since duplicates are allowed, we add every matching element without checking whether it was already added.
+
+# Complexity
+
+- Time complexity: O(n log n + m log m)
+- Space complexity: O(n + m)
+
+# Code
+
+```java
+class Solution {
+
+    public int[] intersect(int[] nums1, int[] nums2) {
+
+        int n = nums1.length;
+        int m = nums2.length;
+
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        int i = 0, j = 0;
+
+        while (i < n && j < m) {
+
+            if (nums1[i] < nums2[j]) {
+                i++;
+            }
+            else if (nums2[j] < nums1[i]) {
+                j++;
+            }
+            else {
+                ans.add(nums1[i]);
+                i++;
+                j++;
+            }
+        }
+
+        int a[] = new int[ans.size()];
+
+        for (int k = 0; k < ans.size(); k++) {
+            a[k] = ans.get(k);
+        }
+
+        return a;
+    }
+}
