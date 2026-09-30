@@ -1,0 +1,82 @@
+# Intuition
+
+To find the intersection of two arrays, we need to find the elements that are present in both arrays.
+
+I first sort both arrays. Once they are sorted, I can use two pointers to compare the elements efficiently.
+
+If the current elements are equal, that element belongs to the intersection. Since the answer should contain only unique elements, I check whether the last added element is different before adding it.
+
+If `nums1[i]` is smaller, I move `i` forward because that element cannot match the current `nums2[j]`.
+
+If `nums2[j]` is smaller, I move `j` forward for the same reason.
+
+# Approach
+
+1. Sort both `nums1` and `nums2`.
+2. Initialize two pointers:
+   - `i` for `nums1`
+   - `j` for `nums2`
+3. Compare `nums1[i]` and `nums2[j]`:
+   - If they are equal, add the element to the answer if it is not already present, then increment both pointers.
+   - If `nums1[i] < nums2[j]`, increment `i`.
+   - Otherwise, increment `j`.
+4. Continue until either pointer reaches the end of its array.
+5. Convert the `ArrayList` into an integer array and return it.
+
+# Complexity
+
+- Time complexity: O(n log n + m log m)
+- Space complexity: O(n + m)
+
+The sorting takes `O(n log n + m log m)`, and the two-pointer traversal takes `O(n + m)`.
+
+The `ArrayList` and returned array together require `O(n + m)` space in the worst case.
+
+# Code
+
+```java
+class Solution {
+
+    public int[] intersection(int[] nums1, int[] nums2) {
+
+        int n = nums1.length;
+        int m = nums2.length;
+
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        int i = 0;
+        int j = 0;
+
+        while (i < n && j < m) {
+
+            if (nums1[i] == nums2[j]) {
+
+                if (ans.size() == 0 ||
+                    ans.get(ans.size() - 1) != nums1[i]) {
+
+                    ans.add(nums1[i]);
+                }
+
+                i++;
+                j++;
+            }
+            else if (nums1[i] < nums2[j]) {
+                i++;
+            }
+            else {
+                j++;
+            }
+        }
+
+        int arr[] = new int[ans.size()];
+
+        for (int k = 0; k < ans.size(); k++) {
+            arr[k] = ans.get(k);
+        }
+
+        return arr;
+    }
+}
